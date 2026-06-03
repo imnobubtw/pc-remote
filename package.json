@@ -1,0 +1,12 @@
+{
+  "name": "pc-remote",
+  "version": "1.0.0",
+  "description": "PC Remote Control - Root scripts for easy setup",
+  "scripts": {
+    "install:server": "cd server && npm install",
+    "install:agent":  "cd agent  && npm install",
+    "install:all":    "npm run install:server && npm run install:agent",
+    "start:server":   "cd server && node server.js",
+    "start:agent":    "cd agent  && node agent.js"
+  }
+}

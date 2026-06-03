@@ -1,0 +1,22 @@
+# Node.js dependencies (installed by npm install, not committed)
+node_modules/
+server/node_modules/
+agent/node_modules/
+
+# Environment variable files (keep secrets out of git)
+.env
+.env.local
+.env.production
+
+# Log files
+*.log
+agent/agent.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+*.swp

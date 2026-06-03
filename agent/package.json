@@ -1,0 +1,13 @@
+{
+  "name": "pc-remote-agent",
+  "version": "1.0.0",
+  "description": "PC Remote Control - Desktop Agent (runs on your Windows PC)",
+  "main": "agent.js",
+  "scripts": {
+    "start": "node agent.js",
+    "dev": "node agent.js"
+  },
+  "dependencies": {
+    "node-fetch": "^2.7.0"
+  }
+}

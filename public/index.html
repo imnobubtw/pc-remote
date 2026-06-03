@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!--
+    index.html - The main page for PC Remote
+    This single file contains BOTH the login page and the dashboard.
+    JavaScript shows/hides the correct one based on login status.
+  -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PC Remote Control</title>
+  <link rel="stylesheet" href="/css/style.css" />
+
+  <!-- Favicion: a simple computer emoji -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🖥️</text></svg>" />
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!--  LOGIN PAGE                                           -->
+  <!--  Shown when the user is not logged in.               -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <div id="login-page" class="page hidden">
+    <div class="login-card">
+
+      <!-- Logo / Icon area -->
+      <div class="login-icon">🖥️</div>
+      <h1 class="login-title">PC Remote</h1>
+      <p class="login-subtitle">Enter your password to continue</p>
+
+      <!-- Login form -->
+      <div class="login-form">
+
+        <!-- Password input -->
+        <div class="input-group">
+          <label for="password-input">Password</label>
+          <input
+            type="password"
+            id="password-input"
+            placeholder="Enter your password"
+            autocomplete="current-password"
+          />
+        </div>
+
+        <!-- Error message (hidden until needed) -->
+        <div id="login-error" class="error-msg hidden">
+          ❌ Incorrect password. Please try again.
+        </div>
+
+        <!-- Login button -->
+        <button id="login-btn" class="btn btn-primary btn-full">
+          <span id="login-btn-text">Sign In</span>
+          <span id="login-btn-loading" class="hidden">Signing in…</span>
+        </button>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!--  DASHBOARD PAGE                                       -->
+  <!--  Shown after a successful login.                      -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <div id="dashboard-page" class="page hidden">
+
+    <!-- ── Top Navigation Bar ───────────────────────────── -->
+    <nav class="navbar">
+      <div class="navbar-brand">
+        <span class="navbar-icon">🖥️</span>
+        <span class="navbar-title">PC Remote</span>
+      </div>
+      <div class="navbar-right">
+        <!-- Shows a pulsing green dot when the agent is recently active -->
+        <div class="agent-status" id="agent-status-indicator">
+          <span class="status-dot" id="status-dot"></span>
+          <span id="status-text">Connecting…</span>
+        </div>
+        <button id="logout-btn" class="btn btn-ghost">Logout</button>
+      </div>
+    </nav>
+
+    <!-- ── Main Content Area ────────────────────────────── -->
+    <main class="dashboard-main">
+
+      <!-- Page header -->
+      <div class="dashboard-header">
+        <h2 class="dashboard-title">Remote Control</h2>
+        <p class="dashboard-subtitle">Click a button to send a command to your PC.</p>
+      </div>
+
+      <!-- ── Control Buttons ─────────────────────────────── -->
+      <div class="controls-grid">
+
+        <!-- Shutdown Button -->
+        <div class="control-card">
+          <div class="control-icon shutdown-icon">⏻</div>
+          <h3 class="control-title">Shutdown</h3>
+          <p class="control-desc">Safely powers off your PC immediately.</p>
+          <button class="btn btn-danger btn-full" data-action="shutdown">
+            Shut Down
+          </button>
+        </div>
+
+        <!-- Restart Button -->
+        <div class="control-card">
+          <div class="control-icon restart-icon">↺</div>
+          <h3 class="control-title">Restart</h3>
+          <p class="control-desc">Reboots your PC to apply updates or fix issues.</p>
+          <button class="btn btn-warning btn-full" data-action="restart">
+            Restart
+          </button>
+        </div>
+
+        <!-- Sleep Button -->
+        <div class="control-card">
+          <div class="control-icon sleep-icon">☾</div>
+          <h3 class="control-title">Sleep</h3>
+          <p class="control-desc">Puts your PC to sleep to save power.</p>
+          <button class="btn btn-info btn-full" data-action="sleep">
+            Sleep
+          </button>
+        </div>
+
+      </div>
+
+      <!-- ── Activity Log ──────────────────────────────── -->
+      <div class="log-card">
+        <h3 class="log-title">📋 Activity Log</h3>
+        <div id="activity-log" class="log-list">
+          <div class="log-entry log-info">Dashboard loaded. Ready to receive commands.</div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!--  CONFIRMATION DIALOG (Modal)                         -->
+  <!--  Appears before any command is sent.                 -->
+  <!--  This prevents accidental clicks.                    -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <div id="confirm-overlay" class="overlay hidden" aria-modal="true" role="dialog">
+    <div class="confirm-dialog">
+
+      <!-- Warning icon -->
+      <div class="confirm-icon" id="confirm-icon">⚠️</div>
+
+      <!-- Title and message -->
+      <h2 class="confirm-title" id="confirm-title">Are you sure?</h2>
+      <p class="confirm-message" id="confirm-message">This action cannot be undone.</p>
+
+      <!-- Action buttons -->
+      <div class="confirm-actions">
+        <button id="confirm-cancel-btn" class="btn btn-ghost">Cancel</button>
+        <button id="confirm-ok-btn" class="btn btn-danger">Yes, proceed</button>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!--  TOAST NOTIFICATION                                  -->
+  <!--  Small popup message that appears briefly.           -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <div id="toast" class="toast hidden">
+    <span id="toast-message"></span>
+  </div>
+
+
+  <!-- Load our JavaScript (defer = load after HTML is ready) -->
+  <script src="/js/app.js" defer></script>
+
+</body>
+</html>
