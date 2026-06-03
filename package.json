@@ -1,12 +1,16 @@
 {
   "name": "pc-remote",
   "version": "1.0.0",
-  "description": "PC Remote Control - Root scripts for easy setup",
+  "description": "PC Remote Control",
+  "main": "server/server.js",
   "scripts": {
-    "install:server": "cd server && npm install",
-    "install:agent":  "cd agent  && npm install",
-    "install:all":    "npm run install:server && npm run install:agent",
-    "start:server":   "cd server && node server.js",
-    "start:agent":    "cd agent  && node agent.js"
+    "start": "node server/server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "uuid": "^9.0.0"
   }
 }
