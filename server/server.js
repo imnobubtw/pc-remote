@@ -188,14 +188,9 @@ app.get('*', (req, res) => {
 });
 
 // ── Start the server ──────────────────────────────────────────
-app.listen(config.port, () => {
-  console.log('');
-  console.log('╔══════════════════════════════════════╗');
-  console.log('║       PC Remote Server Started       ║');
-  console.log('╠══════════════════════════════════════╣');
-  console.log(`║  Local:  http://localhost:${config.port}        ║`);
-  console.log('║                                      ║');
-  console.log('║  Press Ctrl+C to stop the server     ║');
-  console.log('╚══════════════════════════════════════╝');
-  console.log('');
+const PORT = process.env.PORT || config.port;
+
+app.listen(PORT, () => {
+  console.log("Server running on port", PORT);
 });
+
