@@ -1,22 +1,31 @@
-# 🖥️ PC Remote Control
+# PC Remote Control
 
-> Control your Windows PC from anywhere using a secure web dashboard.
+> Control your Windows PC from anywhere using a web dashboard.
 
 ---
+
+> Features
+-Secure login system (password protected)
+-Remote PC shutdown
+-Remote restart
+-Sleep mode control
+-Web dashboard (mobile + desktop)
+-Lightweight background agent
+
 
 ## 📋 Table of Contents
 
 1. [What Is This?](#-what-is-this)
-2. [How It Works](#-how-it-works)
-3. [Project Structure](#-project-structure)
-4. [Step 1 — Install Node.js](#-step-1--install-nodejs)
-5. [Step 2 — Set Your Password](#-step-2--set-your-password)
-6. [Step 3 — Install Dependencies](#-step-3--install-dependencies)
-7. [Step 4 — Deploy the Server (Free Hosting)](#-step-4--deploy-the-server-free-hosting)
-8. [Step 5 — Configure the Desktop Agent](#-step-5--configure-the-desktop-agent)
-9. [Step 6 — Run the Desktop Agent](#-step-6--run-the-desktop-agent)
-10. [Using the Dashboard](#-using-the-dashboard)
-11. [Changing Your Password](#-changing-your-password)
+2. [Step 1 — Install Node.js](#-step-1--install-nodejs)
+3. [Step 2 — Set Your Password](#-step-2--set-your-password)
+4. [Step 3 — Install Dependencies](#-step-3--install-dependencies)
+5. [Step 4 — Deploy the Server (Free Hosting)](#-step-4--deploy-the-server-free-hosting)
+6. [Step 5 — Configure the Desktop Agent](#-step-5--configure-the-desktop-agent)
+7. [Step 6 — Run the Desktop Agent](#-step-6--run-the-desktop-agent)
+8. [Using the Dashboard](#-using-the-dashboard)
+9. [Changing Your Password](#-changing-your-password)
+10. [How It Works](#-how-it-works)
+11. [Project Structure](#-project-structure)
 12. [Troubleshooting](#-troubleshooting)
 13. [Security Notes](#-security-notes)
 
@@ -35,56 +44,6 @@ Everything is password-protected. Nobody else can access your dashboard.
 
 ---
 
-## 🔧 How It Works
-
-```
-[Your Browser] ←──── Web Dashboard ────→ [Server on the Internet]
-                                                    ↑
-                                         (Render / Railway / etc.)
-                                                    ↑
-                                          [Desktop Agent on your PC]
-                                         (runs quietly in background,
-                                          checks for commands every 5s)
-```
-
-1. You open the website and log in with your password.
-2. You click "Shutdown" (or Restart / Sleep).
-3. The website sends a command to the server.
-4. The Desktop Agent (running on your PC) sees the command.
-5. Your PC executes the action.
-
-The agent is a tiny Node.js script that runs on your PC and polls the server. It uses almost no CPU or RAM.
-
----
-
-## 📁 Project Structure
-
-```
-pc-remote/
-│
-├── server/                  ← The web server (runs in the cloud)
-│   ├── server.js            ← Main server logic
-│   ├── config.js            ← ⬅ Change your password here!
-│   └── package.json         ← Server dependencies
-│
-├── agent/                   ← The Desktop Agent (runs on your PC)
-│   ├── agent.js             ← Main agent logic
-│   ├── agent-config.js      ← ⬅ Point this at your server URL
-│   └── package.json         ← Agent dependencies
-│
-├── public/                  ← The website (served by the server)
-│   ├── index.html           ← Login + Dashboard page
-│   ├── css/
-│   │   └── style.css        ← Dark theme styles
-│   └── js/
-│       └── app.js           ← Dashboard JavaScript
-│
-├── package.json             ← Convenience scripts
-└── README.md                ← This file!
-```
-
----
-
 ## ✅ Step 1 — Install Node.js
 
 Node.js is the program that runs our server and agent. You only need to do this once.
@@ -95,8 +54,8 @@ Node.js is the program that runs our server and agent. You only need to do this 
 2. Click the big green button that says **"LTS"** (Long Term Support — the stable version)
 3. Run the downloaded installer
 4. Click **Next** → **Next** → **Install** (accept all defaults)
-5. When it's done, open **Command Prompt**:
-   - Press `Windows key + R`
+5. When it's done, open **Cmd**:
+   - Press `Windows key`
    - Type `cmd`
    - Press Enter
 6. Type this and press Enter to confirm it worked:
@@ -133,7 +92,7 @@ Before you do anything else, set your login password.
 ### For the Server:
 
 1. Open **Command Prompt**
-2. Navigate to the `server` folder. For example, if you put the project on your Desktop:
+2. Navigate to the `server` folder. For example, if you put the project on your Desktop :
    ```
    cd Desktop\pc-remote\server
    ```
@@ -319,6 +278,57 @@ The agent will now start automatically every time you log into Windows. ✅
 4. **Redeploy the server** (on Render: go to your service → click "Manual Deploy" → "Deploy latest commit")
 
 ---
+
+## 🔧 How It Works
+
+```
+[Your Browser] ←──── Web Dashboard ────→ [Server on the Internet]
+                                                    ↑
+                                         (Render / Railway / etc.)
+                                                    ↑
+                                          [Desktop Agent on your PC]
+                                         (runs quietly in background,
+                                          checks for commands every 5s)
+```
+
+1. You open the website and log in with your password.
+2. You click "Shutdown" (or Restart / Sleep).
+3. The website sends a command to the server.
+4. The Desktop Agent (running on your PC) sees the command.
+5. Your PC executes the action.
+
+The agent is a tiny Node.js script that runs on your PC and polls the server. It uses almost no CPU or RAM.
+
+---
+
+## 📁 Project Structure
+
+```
+pc-remote/
+│
+├── server/                  ← The web server (runs in the cloud)
+│   ├── server.js            ← Main server logic
+│   ├── config.js            ← ⬅ Change your password here!
+│   └── package.json         ← Server dependencies
+│
+├── agent/                   ← The Desktop Agent (runs on your PC)
+│   ├── agent.js             ← Main agent logic
+│   ├── agent-config.js      ← ⬅ Point this at your server URL
+│   └── package.json         ← Agent dependencies
+│
+├── public/                  ← The website (served by the server)
+│   ├── index.html           ← Login + Dashboard page
+│   ├── css/
+│   │   └── style.css        ← Dark theme styles
+│   └── js/
+│       └── app.js           ← Dashboard JavaScript
+│
+├── package.json             ← Convenience scripts
+└── README.md                ← This file!
+```
+
+
+
 
 ## 🔍 Troubleshooting
 
